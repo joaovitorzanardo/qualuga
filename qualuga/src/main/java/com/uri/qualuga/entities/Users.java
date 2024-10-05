@@ -1,12 +1,13 @@
 package com.uri.qualuga.entities;
 
+import com.uri.qualuga.dtos.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -29,5 +30,13 @@ public class Users {
 
     @Column(name = "password", nullable = false, length = 100)
     private String password;
+
+    public UserDTO toDTO() {
+        return UserDTO.builder()
+                .userId(userId)
+                .name(name)
+                .email(email).build();
+    }
+
 
 }
