@@ -66,4 +66,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
     }
 
+    @ExceptionHandler(InvalidDateException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidDateException(InvalidDateException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .httpStatus(HttpStatus.GONE)
+                .message(ex.getMessage()).build();
+        return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+    }
+
 }

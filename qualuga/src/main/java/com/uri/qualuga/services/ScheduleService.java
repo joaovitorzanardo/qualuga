@@ -5,6 +5,7 @@ import com.uri.qualuga.dtos.ScheduleDTO;
 import com.uri.qualuga.entities.Court;
 import com.uri.qualuga.entities.Schedule;
 import com.uri.qualuga.exceptions.CourtNotFoundException;
+import com.uri.qualuga.exceptions.InvalidDateException;
 import com.uri.qualuga.exceptions.InvalidScheduleException;
 import com.uri.qualuga.repositories.CourtRepository;
 import com.uri.qualuga.repositories.ScheduleRepository;
@@ -62,6 +63,10 @@ public class ScheduleService {
     }
 
     public List<AvailableSchedulesDTO> getAvailableCourtSchedulesByDate(Long courtId, LocalDate date) {
+        if (date.isBefore(LocalDate.now())) {
+            throw new InvalidDateException();
+        }
+
         Court court = courtRepository.findById(courtId)
                 .orElseThrow(CourtNotFoundException::new);
 
@@ -69,7 +74,7 @@ public class ScheduleService {
                 .findAllByCourtAndDate(court, date);
 
         return schedules.stream()
-                .filter(Schedule::isAvailable)
+                .filter(schedule -> schedule.isAvailable() && (date.isEqual(LocalDate.now()) ? schedule.getStartTime().isAfter(LocalTime.now()) : true))
                 .map(Schedule::toDTO)
                 .toList();
     }
