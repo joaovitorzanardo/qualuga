@@ -1,6 +1,6 @@
 package com.uri.qualuga.services;
 
-import com.uri.qualuga.dtos.UserDTO;
+import com.uri.qualuga.dtos.UserAccountDTO;
 import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.exceptions.EmailAlreadyExistsException;
 import com.uri.qualuga.exceptions.UserNotFoundException;
@@ -20,20 +20,20 @@ public class UsersService {
         return usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
-    public Users updateUser(UserDTO userDTO) {
-        Users user = usersRepository.findById(userDTO.getUserId()).orElseThrow(UserNotFoundException::new);
+    public Users updateUser(UserAccountDTO userAccountDTO) {
+        Users user = usersRepository.findById(userAccountDTO.getUserId()).orElseThrow(UserNotFoundException::new);
 
-        if (!user.getEmail().equals(userDTO.getEmail())) {
-            Optional<Users> userEmail = usersRepository.findUsersByEmail(userDTO.getEmail());
+        if (!user.getEmail().equals(userAccountDTO.getEmail())) {
+            Optional<Users> userEmail = usersRepository.findUsersByEmail(userAccountDTO.getEmail());
 
-            if (userEmail.isPresent()) throw new EmailAlreadyExistsException();
+            if (userEmail.isPresent()) throw new EmailAlreadyExistsException(userAccountDTO.getEmail());
         }
 
-        user.setName(user.getName());
-        user.setEmail(userDTO.getEmail());
+        user.setName(userAccountDTO.getName());
+        user.setEmail(userAccountDTO.getEmail());
 
-        if (!userDTO.getPassword().isEmpty()) {
-            user.setPassword(userDTO.getPassword());
+        if (!userAccountDTO.getPassword().isEmpty()) {
+            user.setPassword(userAccountDTO.getPassword());
         }
 
         return usersRepository.save(user);

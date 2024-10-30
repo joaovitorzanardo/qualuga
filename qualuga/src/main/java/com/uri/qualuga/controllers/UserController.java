@@ -1,7 +1,7 @@
 package com.uri.qualuga.controllers;
 
 import com.uri.qualuga.dtos.SucessResponse;
-import com.uri.qualuga.dtos.UserDTO;
+import com.uri.qualuga.dtos.UserAccountDTO;
 import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.services.UsersService;
 import jakarta.validation.Valid;
@@ -11,28 +11,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/account")
+@RequestMapping(path = "/user/account")
 public class UserController {
 
     @Autowired
     UsersService usersService;
 
     @GetMapping(path = "/{userId}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long userId) {
+    public ResponseEntity<UserAccountDTO> getUserAccount(@PathVariable Long userId) {
         Users user = usersService.getUser(userId);
         return ResponseEntity.ok(user.toDTO());
     }
 
     @PutMapping
-    public ResponseEntity<SucessResponse> updateUser(@Valid @RequestBody UserDTO userDTO) {
-        Users user = usersService.updateUser(userDTO);
+    public ResponseEntity<SucessResponse> updateUserAccount(@Valid @RequestBody UserAccountDTO userAccountDTO) {
+        Users user = usersService.updateUser(userAccountDTO);
 
         SucessResponse sucessResponse = SucessResponse.builder()
-                .id(userDTO.getUserId())
+                .id(userAccountDTO.getUserId())
                 .message("Usuário atualizado com sucesso!")
                 .httpStatus(HttpStatus.OK).build();
+
         return ResponseEntity.ok(sucessResponse);
     }
-
 
 }

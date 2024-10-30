@@ -1,7 +1,11 @@
 package com.uri.qualuga.entities;
 
+import com.uri.qualuga.dtos.AvailableSchedulesDTO;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "schedule")
@@ -21,7 +25,28 @@ public class Schedule {
             allocationSize = 1)
     private Long scheduleId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "court_id", nullable = false)
+    private Court court;
 
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
+    @Column(name = "start_time", nullable = false)
+    private LocalTime startTime;
+
+    @Column(name = "end_time", nullable = false)
+    private LocalTime endTime;
+
+    @Column(name = "available", nullable = false)
+    private boolean available = true;
+
+    public AvailableSchedulesDTO toDTO() {
+        return AvailableSchedulesDTO.builder()
+                .scheduleId(scheduleId)
+                .date(date)
+                .startTime(startTime)
+                .endTime(endTime).build();
+    }
 
 }

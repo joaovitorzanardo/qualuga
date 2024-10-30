@@ -1,5 +1,6 @@
 package com.uri.qualuga.entities;
 
+import com.uri.qualuga.dtos.AddressDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,5 +39,17 @@ public class Address {
 
     @Column(name = "state", nullable = false, length = 2)
     private String state;
+
+    public AddressDTO toDTO() {
+        return AddressDTO.builder()
+                .addressId(addressId)
+                .cep(cep)
+                .street(street)
+                .number(number)
+                .district(district)
+                .city(city)
+                .state(state)
+                .build();
+    }
 
 }

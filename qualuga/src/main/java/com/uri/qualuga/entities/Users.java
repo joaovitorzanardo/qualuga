@@ -1,6 +1,6 @@
 package com.uri.qualuga.entities;
 
-import com.uri.qualuga.dtos.UserDTO;
+import com.uri.qualuga.dtos.UserAccountDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class Users {
+public class Users implements Account {
 
     @Id
     @Column(name = "user_id")
@@ -31,8 +31,8 @@ public class Users {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    public UserDTO toDTO() {
-        return UserDTO.builder()
+    public UserAccountDTO toDTO() {
+        return UserAccountDTO.builder()
                 .userId(userId)
                 .name(name)
                 .email(email).build();
