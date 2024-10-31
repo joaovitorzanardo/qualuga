@@ -1,1 +1,1 @@
-qualuga/target/**
+qualuga/target/**/**
