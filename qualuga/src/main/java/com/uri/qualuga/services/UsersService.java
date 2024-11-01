@@ -6,6 +6,9 @@ import com.uri.qualuga.exceptions.EmailAlreadyExistsException;
 import com.uri.qualuga.exceptions.UserNotFoundException;
 import com.uri.qualuga.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,12 +19,14 @@ public class UsersService {
     @Autowired
     UsersRepository usersRepository;
 
-    public Users getUser(Long userId) {
-        return usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public Users getLoggedUser() {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usersRepository.findById(Long.valueOf(jwt.getSubject())).orElseThrow(UserNotFoundException::new);
     }
 
     public Users updateUser(UserAccountDTO userAccountDTO) {
-        Users user = usersRepository.findById(userAccountDTO.getUserId()).orElseThrow(UserNotFoundException::new);
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users user = usersRepository.findById(Long.valueOf(jwt.getSubject())).orElseThrow(UserNotFoundException::new);
 
         if (!user.getEmail().equals(userAccountDTO.getEmail())) {
             Optional<Users> userEmail = usersRepository.findUsersByEmail(userAccountDTO.getEmail());

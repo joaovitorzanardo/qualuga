@@ -1,8 +1,6 @@
 package com.uri.qualuga.controllers.auth;
 
-import com.uri.qualuga.dtos.CheckEmailDTO;
-import com.uri.qualuga.dtos.SucessResponse;
-import com.uri.qualuga.dtos.UserAccountDTO;
+import com.uri.qualuga.dtos.*;
 import com.uri.qualuga.services.auth.AuthService;
 import com.uri.qualuga.services.auth.UserAuth;
 import jakarta.annotation.PostConstruct;
@@ -14,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/user")
-public class UserAuthController extends AuthController {
+@RequestMapping(path = "/auth/user")
+public class UserAuthController {
 
     @Autowired
     @Qualifier("beanUserAuth")
@@ -38,6 +36,11 @@ public class UserAuthController extends AuthController {
                 .httpStatus(HttpStatus.CREATED).build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(sucessResponse);
+    }
+
+    @PostMapping(path = "/login")
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 
     @GetMapping(path ="/checkEmail/{email}")

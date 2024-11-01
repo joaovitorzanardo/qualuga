@@ -4,6 +4,7 @@ import com.uri.qualuga.dtos.CourtDTO;
 import com.uri.qualuga.dtos.SucessResponse;
 import com.uri.qualuga.entities.Court;
 import com.uri.qualuga.services.CourtService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class CourtController {
     private CourtService courtService;
 
     @PostMapping(path = "/company/courts")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> saveCourt(@Valid @RequestBody CourtDTO courtDTO) {
         Court court = courtService.saveCourt(courtDTO);
 
@@ -32,6 +34,7 @@ public class CourtController {
     }
 
     @PutMapping(path = "/company/courts")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> updateCourt(@Valid @RequestBody CourtDTO courtDTO) {
         Court court = courtService.updateCourt(courtDTO);
 
@@ -44,6 +47,7 @@ public class CourtController {
     }
 
     @DeleteMapping(path = "/company/{companyId}/courts/{courtId}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> deleteCourt(@PathVariable Long companyId, @PathVariable Long courtId) {
         Court court = courtService.deleteCourt(companyId, courtId);
 
@@ -56,11 +60,13 @@ public class CourtController {
     }
 
     @GetMapping(path = "/company/{companyId}/courts/{courtId}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CourtDTO> getCompanyCourtById(@PathVariable Long companyId, @PathVariable Long courtId) {
         return ResponseEntity.ok(courtService.getCompanyCourtById(companyId, courtId));
     }
 
     @GetMapping(path = "/company/{companyId}/courts")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<List<CourtDTO>> getCompanyCourts(@PathVariable Long companyId) {
         return ResponseEntity.ok(courtService.getCompanyCourts(companyId));
     }

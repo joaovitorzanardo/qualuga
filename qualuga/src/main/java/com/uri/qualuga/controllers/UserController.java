@@ -4,10 +4,12 @@ import com.uri.qualuga.dtos.SucessResponse;
 import com.uri.qualuga.dtos.UserAccountDTO;
 import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.services.UsersService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +19,15 @@ public class UserController {
     @Autowired
     UsersService usersService;
 
-    @GetMapping(path = "/{userId}")
-    public ResponseEntity<UserAccountDTO> getUserAccount(@PathVariable Long userId) {
-        Users user = usersService.getUser(userId);
+    @GetMapping
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<UserAccountDTO> getUserAccount() {
+        Users user = usersService.getLoggedUser();
         return ResponseEntity.ok(user.toDTO());
     }
 
     @PutMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> updateUserAccount(@Valid @RequestBody UserAccountDTO userAccountDTO) {
         Users user = usersService.updateUser(userAccountDTO);
 

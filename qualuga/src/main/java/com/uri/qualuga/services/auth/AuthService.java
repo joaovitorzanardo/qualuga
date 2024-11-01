@@ -1,5 +1,7 @@
 package com.uri.qualuga.services.auth;
 
+import com.uri.qualuga.dtos.LoginRequest;
+import com.uri.qualuga.dtos.LoginResponse;
 import com.uri.qualuga.entities.Account;
 
 public class AuthService {
@@ -12,6 +14,10 @@ public class AuthService {
 
     public Long register(Account account) {
         return auth.register(account);
+    }
+
+    public LoginResponse login(LoginRequest loginRequest) {
+        return auth.login(loginRequest);
     }
 
     public boolean isEmailValid(String email) {

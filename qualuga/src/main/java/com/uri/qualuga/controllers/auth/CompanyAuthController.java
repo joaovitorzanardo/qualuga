@@ -1,11 +1,8 @@
 package com.uri.qualuga.controllers.auth;
 
-import com.uri.qualuga.dtos.CheckEmailDTO;
-import com.uri.qualuga.dtos.CompanyAccountDTO;
-import com.uri.qualuga.dtos.SucessResponse;
+import com.uri.qualuga.dtos.*;
 import com.uri.qualuga.services.auth.AuthService;
 import com.uri.qualuga.services.auth.CompanyAuth;
-import com.uri.qualuga.services.auth.UserAuth;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/company")
+@RequestMapping(path = "/auth/company")
 public class CompanyAuthController {
 
     @Autowired
@@ -40,6 +37,11 @@ public class CompanyAuthController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(sucessResponse);
+    }
+
+    @PostMapping(path = "/login")
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 
     @GetMapping(path ="/checkEmail/{email}")

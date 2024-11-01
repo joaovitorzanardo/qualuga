@@ -20,7 +20,7 @@ public class Users implements Account {
             sequenceName = "user_sequence",
             initialValue = 1,
             allocationSize = 1)
-    private Long userId;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -33,7 +33,7 @@ public class Users implements Account {
 
     public UserAccountDTO toDTO() {
         return UserAccountDTO.builder()
-                .userId(userId)
+                .userId(id)
                 .name(name)
                 .email(email).build();
     }

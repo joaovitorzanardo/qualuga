@@ -4,6 +4,7 @@ import com.uri.qualuga.dtos.SportDTO;
 import com.uri.qualuga.dtos.SucessResponse;
 import com.uri.qualuga.entities.Sport;
 import com.uri.qualuga.services.SportService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class SportController {
     private SportService sportService;
 
     @PostMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> saveSport(SportDTO sportDTO) {
         Sport sport = sportService.saveSport(sportDTO.toEntity());
 
@@ -34,6 +36,7 @@ public class SportController {
     }
 
     @GetMapping
+    @SecurityRequirement(name = "Authorization")
     public List<SportDTO> getSports() {
         return sportService.getSports();
     }

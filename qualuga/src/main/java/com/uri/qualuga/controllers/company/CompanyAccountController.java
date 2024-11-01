@@ -4,6 +4,7 @@ import com.uri.qualuga.dtos.CompanyAccountDTO;
 import com.uri.qualuga.dtos.SucessResponse;
 import com.uri.qualuga.entities.Company;
 import com.uri.qualuga.services.CompanyService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class CompanyAccountController extends CompanyController {
     private CompanyService companyService;
 
     @PutMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> updateCompanyAccount(@Valid @RequestBody CompanyAccountDTO companyAccountDTO) {
         Company company = companyService.updateCompany(companyAccountDTO);
 

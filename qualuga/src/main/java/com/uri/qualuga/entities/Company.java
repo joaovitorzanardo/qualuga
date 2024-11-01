@@ -24,7 +24,7 @@ public class Company implements Account {
             sequenceName = "company_sequence",
             initialValue = 1,
             allocationSize = 1)
-    private Long companyId;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -50,7 +50,7 @@ public class Company implements Account {
         }
 
         return CompanyDTO.builder()
-                .id(companyId)
+                .id(id)
                 .name(name)
                 .address(address.toDTO())
                 .courts(courtDTOS).build();

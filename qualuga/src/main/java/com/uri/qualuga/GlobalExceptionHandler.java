@@ -74,4 +74,28 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .httpStatus(HttpStatus.GONE)
+                .message(ex.getMessage()).build();
+        return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(FavoriteAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleFavoriteAlreadyExistsException(FavoriteAlreadyExistsException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .httpStatus(HttpStatus.CONFLICT)
+                .message(ex.getMessage()).build();
+        return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(FavoriteNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleFavoriteNotFoundException(FavoriteNotFoundException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .httpStatus(HttpStatus.GONE)
+                .message(ex.getMessage()).build();
+        return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+    }
+
 }

@@ -4,6 +4,7 @@ import com.uri.qualuga.dtos.AvailableSchedulesDTO;
 import com.uri.qualuga.dtos.ScheduleDTO;
 import com.uri.qualuga.dtos.SucessResponse;
 import com.uri.qualuga.services.ScheduleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @PostMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<SucessResponse> addSchedules(@Valid @RequestBody ScheduleDTO schedulesDTO) {
         scheduleService.addSchedules(schedulesDTO);
 
@@ -32,6 +34,7 @@ public class ScheduleController {
     }
 
     @GetMapping(path = "/available/{courtId}/{date}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<List<AvailableSchedulesDTO>> getAvailableCourtSchedulesByDate(@PathVariable Long courtId, @PathVariable LocalDate date) {
         return ResponseEntity.ok(scheduleService.getAvailableCourtSchedulesByDate(courtId, date));
     }
