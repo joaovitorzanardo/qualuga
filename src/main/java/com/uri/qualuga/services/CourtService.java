@@ -52,7 +52,6 @@ public class CourtService {
         }
 
         List<Sport> sports = new ArrayList<>();
-        List<CourtImage> images = new ArrayList<>();
 
         for (SportDTO sportDTO : courtDTO.getSports()) {
             Sport sport = sportRepository.findById(sportDTO.getSportId())

@@ -28,7 +28,7 @@ public class Court {
             allocationSize = 1)
     private Long courtId;
 
-    @Column(name = "number", nullable = false, unique = true)
+    @Column(name = "number", nullable = false)
     private Integer number;
 
     @ManyToOne(fetch = FetchType.LAZY)
