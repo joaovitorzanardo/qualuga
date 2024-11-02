@@ -6,6 +6,7 @@ import com.uri.qualuga.entities.Account;
 import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.exceptions.BadCredentialsException;
 import com.uri.qualuga.exceptions.EmailAlreadyExistsException;
+import com.uri.qualuga.repositories.CompanyRepository;
 import com.uri.qualuga.repositories.UsersRepository;
 import com.uri.qualuga.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserAuth implements Auth {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -56,6 +60,7 @@ public class UserAuth implements Auth {
 
     @Override
     public boolean isEmailValid(String email) {
-        return usersRepository.findUsersByEmail(email).isEmpty();
+        return usersRepository.findUsersByEmail(email).isEmpty()
+                && companyRepository.findCompanyByEmail(email).isEmpty();
     }
 }
