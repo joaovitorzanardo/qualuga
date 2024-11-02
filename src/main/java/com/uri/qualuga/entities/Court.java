@@ -60,7 +60,6 @@ public class Court {
         return CourtResponse.builder()
                 .courtId(courtId)
                 .number(number)
-                .company(company.toCompanyDTO())
                 .images(courtImageDTOs)
                 .sports(sportDTOs).build();
     }

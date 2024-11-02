@@ -14,7 +14,6 @@ public class CourtResponse {
 
     private Long courtId;
     private Integer number;
-    private CompanyDTO company;
     private List<CourtImageDTO> images;
     private List<SportDTO> sports;
 }
