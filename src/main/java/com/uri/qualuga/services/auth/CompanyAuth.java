@@ -4,6 +4,7 @@ import com.uri.qualuga.dtos.request.LoginRequest;
 import com.uri.qualuga.dtos.response.LoginResponse;
 import com.uri.qualuga.entities.Account;
 import com.uri.qualuga.entities.Company;
+import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.exceptions.BadCredentialsException;
 import com.uri.qualuga.exceptions.EmailAlreadyExistsException;
 import com.uri.qualuga.repositories.CompanyRepository;
@@ -32,7 +33,10 @@ public class CompanyAuth implements Auth {
             throw new EmailAlreadyExistsException(account.getEmail());
         }
 
-        return companyRepository.save((Company) account).getId();
+        Company company = (Company) account;
+        company.setPassword(passwordEncoder.encode(account.getPassword()));
+
+        return companyRepository.save(company).getId();
     }
 
     @Override
