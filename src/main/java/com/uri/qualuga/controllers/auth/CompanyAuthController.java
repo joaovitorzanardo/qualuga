@@ -1,6 +1,10 @@
 package com.uri.qualuga.controllers.auth;
 
-import com.uri.qualuga.dtos.*;
+import com.uri.qualuga.dtos.account.CompanyAccountDTO;
+import com.uri.qualuga.dtos.request.LoginRequest;
+import com.uri.qualuga.dtos.response.CheckEmailResponse;
+import com.uri.qualuga.dtos.response.LoginResponse;
+import com.uri.qualuga.dtos.response.SucessResponse;
 import com.uri.qualuga.services.auth.AuthService;
 import com.uri.qualuga.services.auth.CompanyAuth;
 import jakarta.annotation.PostConstruct;
@@ -45,10 +49,10 @@ public class CompanyAuthController {
     }
 
     @GetMapping(path ="/checkEmail/{email}")
-    public ResponseEntity<CheckEmailDTO> checkEmail(@PathVariable String email) {
+    public ResponseEntity<CheckEmailResponse> checkEmail(@PathVariable String email) {
         boolean isEmailValid = authService.isEmailValid(email);
 
-        CheckEmailDTO checkEmailDTO = CheckEmailDTO.builder()
+        CheckEmailResponse checkEmailDTO = CheckEmailResponse.builder()
                 .email(email)
                 .isValid(isEmailValid)
                 .build();

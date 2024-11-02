@@ -82,7 +82,7 @@ public class FavoriteService {
         List<Favorite> favorites = favoriteRepository.findAllByUser(loggedUser);
 
         for (Favorite favorite : favorites) {
-            favoriteCompanies.add(favorite.getCompany().toDTO());
+            favoriteCompanies.add(favorite.getCompany().toCompanyDTO());
         }
 
         return favoriteCompanies;

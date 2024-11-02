@@ -1,9 +1,8 @@
 package com.uri.qualuga.services.auth;
 
-import com.uri.qualuga.dtos.LoginRequest;
-import com.uri.qualuga.dtos.LoginResponse;
+import com.uri.qualuga.dtos.request.LoginRequest;
+import com.uri.qualuga.dtos.response.LoginResponse;
 import com.uri.qualuga.entities.Account;
-import com.uri.qualuga.entities.Company;
 import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.exceptions.BadCredentialsException;
 import com.uri.qualuga.exceptions.EmailAlreadyExistsException;

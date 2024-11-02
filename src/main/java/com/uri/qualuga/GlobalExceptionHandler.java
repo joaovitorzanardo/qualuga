@@ -1,6 +1,6 @@
 package com.uri.qualuga;
 
-import com.uri.qualuga.dtos.ErrorResponse;
+import com.uri.qualuga.dtos.response.ErrorResponse;
 import com.uri.qualuga.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

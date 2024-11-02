@@ -1,6 +1,7 @@
 package com.uri.qualuga.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.uri.qualuga.dtos.response.CourtResponse;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,6 +20,6 @@ public class ScheduleDTO {
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endTime;
 
-    private CourtDTO court;
+    private CourtResponse court;
 
 }

@@ -1,8 +1,9 @@
 package com.uri.qualuga.services;
 
-import com.uri.qualuga.dtos.CourtDTO;
+import com.uri.qualuga.dtos.RegisterCourtDTO;
 import com.uri.qualuga.dtos.CourtImageDTO;
 import com.uri.qualuga.dtos.SportDTO;
+import com.uri.qualuga.dtos.response.CourtResponse;
 import com.uri.qualuga.entities.Company;
 import com.uri.qualuga.entities.Court;
 import com.uri.qualuga.entities.CourtImage;
@@ -16,6 +17,8 @@ import com.uri.qualuga.repositories.CourtImageRepository;
 import com.uri.qualuga.repositories.CourtRepository;
 import com.uri.qualuga.repositories.SportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,8 +40,9 @@ public class CourtService {
     @Autowired
     private CourtImageRepository courtImageRepository;
 
-    public Court saveCourt(CourtDTO courtDTO) {
-        Company company = companyRepository.findById(courtDTO.getCompanyId())
+    public Court saveCourt(RegisterCourtDTO courtDTO) {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Company company = companyRepository.findById(Long.valueOf(jwt.getSubject()))
                 .orElseThrow(CompanyNotFoundException::new);
 
         Optional<Court> courtNumber = courtRepository.findCourtByCompanyAndNumber(company, courtDTO.getNumber());
@@ -76,11 +80,12 @@ public class CourtService {
         return court;
     }
 
-    public Court updateCourt(CourtDTO courtDTO) {
-        Company company = companyRepository.findById(courtDTO.getCompanyId())
+    public Court updateCourt(Long courtId, RegisterCourtDTO courtDTO) {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Company company = companyRepository.findById(Long.valueOf(jwt.getSubject()))
                 .orElseThrow(CompanyNotFoundException::new);
 
-        Court court = courtRepository.findById(courtDTO.getCourtId())
+        Court court = courtRepository.findById(courtId)
                 .orElseThrow(CourtNotFoundException::new);
 
         if (court.getNumber().equals(courtDTO.getNumber())) {
@@ -117,8 +122,9 @@ public class CourtService {
         return courtRepository.save(court);
     }
 
-    public Court deleteCourt(Long companyId, Long courtId) {
-        Company company = companyRepository.findById(companyId)
+    public Court deleteCourt(Long courtId) {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Company company = companyRepository.findById(Long.valueOf(jwt.getSubject()))
                 .orElseThrow(CompanyNotFoundException::new);
 
         Court court = courtRepository.findCourtByCompanyAndCourtId(company, courtId)
@@ -129,25 +135,20 @@ public class CourtService {
         return court;
     }
 
-    public CourtDTO getCompanyCourtById(Long companyId, Long courtId) {
+    public CourtResponse getCompanyCourtById(Long companyId, Long courtId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(CompanyNotFoundException::new);
 
         return courtRepository.findCourtByCompanyAndCourtId(company, courtId)
-                .orElseThrow(CourtNotFoundException::new).toDTO();
+                .orElseThrow(CourtNotFoundException::new).toCourtResponse();
     }
 
-    public List<CourtDTO> getCompanyCourts(Long companyId) {
-        List<CourtDTO> courts = new ArrayList<>();
-
+    public List<CourtResponse> getCompanyCourts(Long companyId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(CompanyNotFoundException::new);
 
-        for (Court court : company.getCourts()) {
-            courts.add(court.toDTO());
-        }
-
-        return courts;
+        return company.getCourts().stream()
+                .map(Court::toCourtResponse).toList();
     }
 
 }

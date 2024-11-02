@@ -1,6 +1,6 @@
 package com.uri.qualuga.entities;
 
-import com.uri.qualuga.dtos.UserAccountDTO;
+import com.uri.qualuga.dtos.account.UserAccountDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

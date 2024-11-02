@@ -123,7 +123,22 @@ public class ScheduleService {
 
         return myAgenda.stream()
                 .filter((agenda) -> agenda.getSchedule().getDate().isAfter(LocalDate.now())
-                        && agenda.getSchedule().getStartTime().isAfter(LocalTime.now()))
+                        || (agenda.getSchedule().getDate().isEqual(LocalDate.now()) && agenda.getSchedule().getStartTime().isAfter(LocalTime.now())))
+                .map((agenda -> agenda.getSchedule().toScheduleDTO()))
+                .toList();
+    }
+
+    public List<ScheduleDTO> getMyPreviousSchedules() {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Users loggedUser = usersRepository.findById(Long.valueOf(jwt.getSubject()))
+                .orElseThrow(UserNotFoundException::new);
+
+        List<Agenda> myAgenda = agendaRepository.findAllByUser(loggedUser);
+
+        return myAgenda.stream()
+                .filter((agenda) -> agenda.getSchedule().getDate().isBefore(LocalDate.now())
+                        || (agenda.getSchedule().getDate().isEqual(LocalDate.now()) && agenda.getSchedule().getStartTime().isBefore(LocalTime.now())))
                 .map((agenda -> agenda.getSchedule().toScheduleDTO()))
                 .toList();
     }

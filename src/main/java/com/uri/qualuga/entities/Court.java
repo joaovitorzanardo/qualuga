@@ -1,8 +1,9 @@
 package com.uri.qualuga.entities;
 
-import com.uri.qualuga.dtos.CourtDTO;
+import com.uri.qualuga.dtos.RegisterCourtDTO;
 import com.uri.qualuga.dtos.CourtImageDTO;
 import com.uri.qualuga.dtos.SportDTO;
+import com.uri.qualuga.dtos.response.CourtResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,7 +45,7 @@ public class Court {
             inverseJoinColumns = @JoinColumn(name = "sport_id"))
     private List<Sport> sports;
 
-    public CourtDTO toDTO() {
+    public CourtResponse toCourtResponse() {
         List<CourtImageDTO> courtImageDTOs = new ArrayList<>();
         List<SportDTO> sportDTOs = new ArrayList<>();
 
@@ -56,10 +57,10 @@ public class Court {
             sportDTOs.add(sport.toDTO());
         }
 
-        return CourtDTO.builder()
+        return CourtResponse.builder()
                 .courtId(courtId)
                 .number(number)
-                .companyId(company.getId())
+                .company(company.toCompanyDTO())
                 .images(courtImageDTOs)
                 .sports(sportDTOs).build();
     }

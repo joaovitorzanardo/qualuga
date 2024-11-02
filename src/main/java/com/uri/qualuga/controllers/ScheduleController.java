@@ -1,12 +1,10 @@
 package com.uri.qualuga.controllers;
 
 import com.uri.qualuga.dtos.AvailableSchedulesDTO;
-import com.uri.qualuga.dtos.RegisterSchedulesDTO;
-import com.uri.qualuga.dtos.SucessResponse;
+import com.uri.qualuga.dtos.response.SucessResponse;
 import com.uri.qualuga.entities.Schedule;
 import com.uri.qualuga.services.ScheduleService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,25 +14,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/schedule")
+@RequestMapping(path = "/schedules")
 public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
 
-    @PostMapping
+    @PostMapping(path = "/{scheduleId}")
     @SecurityRequirement(name = "Authorization")
-    public ResponseEntity<SucessResponse> addSchedules(@Valid @RequestBody RegisterSchedulesDTO schedulesDTO) {
-        scheduleService.addSchedules(schedulesDTO);
-
-        SucessResponse sucessResponse = SucessResponse.builder()
-                .message("Horários cadastrados com sucesso!")
-                .httpStatus(HttpStatus.CREATED).build();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(sucessResponse);
-    }
-
-    @PostMapping(path = "/appoint/{scheduleId}")
     public ResponseEntity<SucessResponse> appointSchedule(@PathVariable Long scheduleId) {
         Schedule schedule = scheduleService.appointSchedule(scheduleId);
 
@@ -45,9 +32,9 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(sucessResponse);
     }
 
-    @GetMapping(path = "/available/{courtId}/{date}")
+    @GetMapping(path = "/courts/{courtId}")
     @SecurityRequirement(name = "Authorization")
-    public ResponseEntity<List<AvailableSchedulesDTO>> getAvailableCourtSchedulesByDate(@PathVariable Long courtId, @PathVariable LocalDate date) {
+    public ResponseEntity<List<AvailableSchedulesDTO>> getAvailableCourtSchedulesByDate(@PathVariable Long courtId, @RequestParam LocalDate date) {
         return ResponseEntity.ok(scheduleService.getAvailableCourtSchedulesByDate(courtId, date));
     }
 

@@ -1,7 +1,7 @@
 package com.uri.qualuga.controllers;
 
 import com.uri.qualuga.dtos.SportDTO;
-import com.uri.qualuga.dtos.SucessResponse;
+import com.uri.qualuga.dtos.response.SucessResponse;
 import com.uri.qualuga.entities.Sport;
 import com.uri.qualuga.services.SportService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

@@ -1,7 +1,9 @@
 package com.uri.qualuga.entities;
 
+import com.uri.qualuga.dtos.account.CompanyAccountDTO;
 import com.uri.qualuga.dtos.CompanyDTO;
-import com.uri.qualuga.dtos.CourtDTO;
+import com.uri.qualuga.dtos.RegisterCourtDTO;
+import com.uri.qualuga.dtos.response.CourtResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,18 +44,24 @@ public class Company implements Account {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Court> courts;
 
-    public CompanyDTO toDTO() {
-        List<CourtDTO> courtDTOS = new ArrayList<>();
-
-        for (Court court : getCourts()) {
-            courtDTOS.add(court.toDTO());
-        }
+    public CompanyDTO toCompanyDTO() {
+        List<CourtResponse> courtsResponse = courts.stream()
+                .map(Court::toCourtResponse)
+                .toList();
 
         return CompanyDTO.builder()
                 .id(id)
                 .name(name)
                 .address(address.toDTO())
-                .courts(courtDTOS).build();
+                .courts(courtsResponse).build();
+    }
+
+    public CompanyAccountDTO toCompanyAccountDTO() {
+        return CompanyAccountDTO.builder()
+                .companyId(id)
+                .name(name)
+                .email(email)
+                .address(address.toDTO()).build();
     }
 
 

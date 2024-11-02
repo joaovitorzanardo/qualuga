@@ -1,13 +1,12 @@
 package com.uri.qualuga.services;
 
-import com.uri.qualuga.dtos.UserAccountDTO;
+import com.uri.qualuga.dtos.account.UserAccountDTO;
 import com.uri.qualuga.entities.Users;
 import com.uri.qualuga.exceptions.EmailAlreadyExistsException;
 import com.uri.qualuga.exceptions.UserNotFoundException;
 import com.uri.qualuga.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 

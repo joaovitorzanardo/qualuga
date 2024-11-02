@@ -52,7 +52,7 @@ public class Schedule {
 
     public ScheduleDTO toScheduleDTO() {
         return ScheduleDTO.builder()
-                .court(court.toDTO())
+                .court(court.toCourtResponse())
                 .date(date)
                 .startTime(startTime)
                 .endTime(endTime).build();

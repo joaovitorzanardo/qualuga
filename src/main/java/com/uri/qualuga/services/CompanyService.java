@@ -1,14 +1,16 @@
 package com.uri.qualuga.services;
 
-import com.uri.qualuga.dtos.CompanyAccountDTO;
+import com.uri.qualuga.dtos.CompanyDTO;
 import com.uri.qualuga.entities.Company;
 import com.uri.qualuga.exceptions.CompanyNotFoundException;
-import com.uri.qualuga.exceptions.EmailAlreadyExistsException;
 import com.uri.qualuga.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CompanyService {
@@ -20,27 +22,16 @@ public class CompanyService {
         return companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
     }
 
-    public Company updateCompany(CompanyAccountDTO companyAccountDTO) {
-        Company company = companyRepository.findById(companyAccountDTO.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
+    public List<CompanyDTO> getAllCompanies(Integer page, Integer perPage) {
+        List<CompanyDTO> companies = new ArrayList<>();
 
-        if (!companyAccountDTO.getEmail().equals(company.getEmail())) {
-            Optional<Company> companyEmail = companyRepository.findCompanyByEmail(companyAccountDTO.getEmail());
+        Page<Company> companyPage = companyRepository.findAll(PageRequest.of(page, perPage));
 
-            if (companyEmail.isPresent()) {
-                throw new EmailAlreadyExistsException(companyAccountDTO.getEmail());
-            }
-
-            company.setEmail(companyAccountDTO.getEmail());
+        for (Company company : companyPage.getContent()) {
+            companies.add(company.toCompanyDTO());
         }
 
-        if (!companyAccountDTO.getPassword().isEmpty()) {
-            company.setPassword(companyAccountDTO.getPassword());
-        }
-
-        company.setName(companyAccountDTO.getName());
-        company.setAddress(companyAccountDTO.getAddress().toEntity());
-
-        return companyRepository.save(company);
+        return companies;
     }
 
 }
