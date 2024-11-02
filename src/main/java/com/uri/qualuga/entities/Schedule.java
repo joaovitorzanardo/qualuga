@@ -1,6 +1,7 @@
 package com.uri.qualuga.entities;
 
 import com.uri.qualuga.dtos.AvailableSchedulesDTO;
+import com.uri.qualuga.dtos.ScheduleDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,9 +42,17 @@ public class Schedule {
     @Column(name = "available", nullable = false)
     private boolean available = true;
 
-    public AvailableSchedulesDTO toDTO() {
+    public AvailableSchedulesDTO toAvailableSchedulesDTO() {
         return AvailableSchedulesDTO.builder()
                 .scheduleId(scheduleId)
+                .date(date)
+                .startTime(startTime)
+                .endTime(endTime).build();
+    }
+
+    public ScheduleDTO toScheduleDTO() {
+        return ScheduleDTO.builder()
+                .court(court.toDTO())
                 .date(date)
                 .startTime(startTime)
                 .endTime(endTime).build();

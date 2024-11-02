@@ -1,8 +1,9 @@
 package com.uri.qualuga.controllers;
 
 import com.uri.qualuga.dtos.AvailableSchedulesDTO;
-import com.uri.qualuga.dtos.ScheduleDTO;
+import com.uri.qualuga.dtos.RegisterSchedulesDTO;
 import com.uri.qualuga.dtos.SucessResponse;
+import com.uri.qualuga.entities.Schedule;
 import com.uri.qualuga.services.ScheduleService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -23,11 +24,22 @@ public class ScheduleController {
 
     @PostMapping
     @SecurityRequirement(name = "Authorization")
-    public ResponseEntity<SucessResponse> addSchedules(@Valid @RequestBody ScheduleDTO schedulesDTO) {
+    public ResponseEntity<SucessResponse> addSchedules(@Valid @RequestBody RegisterSchedulesDTO schedulesDTO) {
         scheduleService.addSchedules(schedulesDTO);
 
         SucessResponse sucessResponse = SucessResponse.builder()
                 .message("Horários cadastrados com sucesso!")
+                .httpStatus(HttpStatus.CREATED).build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(sucessResponse);
+    }
+
+    @PostMapping(path = "/appoint/{scheduleId}")
+    public ResponseEntity<SucessResponse> appointSchedule(@PathVariable Long scheduleId) {
+        Schedule schedule = scheduleService.appointSchedule(scheduleId);
+
+        SucessResponse sucessResponse = SucessResponse.builder()
+                .message("Quadra " + schedule.getCourt().getNumber() + " reservada com sucesso!")
                 .httpStatus(HttpStatus.CREATED).build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(sucessResponse);
